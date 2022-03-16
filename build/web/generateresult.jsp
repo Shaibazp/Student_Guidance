@@ -1,4 +1,6 @@
+<%@ include file="DB_Connection.jsp"%>
 <%
+    String uno = (String)request.getSession().getAttribute("unm").toString();
     String q1 = request.getParameter("optradio1");
     String q2 = request.getParameter("optradio2");
     String q3 = request.getParameter("optradio3");
@@ -25,5 +27,78 @@
     if(q10.equals("6bits")){cont10++;}else {cont10 = cont10+0;}
     int sum = cont1+cont2+cont3+cont4+cont5+cont6+cont7+cont8+cont9+cont10;
     System.out.println(sum);
+    
+    try
+    {
+        PreparedStatement pstmt = null;
+        PreparedStatement pstn1 = con.prepareStatement("select * from registration where cont=?");
+        pstn1.setString(1, uno);
+        ResultSet rs = pstn1.executeQuery();
+        while (rs.next()) 
+        { 
+
+          %>
+            
+            <!DOCTYPE html>
+            <html >
+                <head>
+                    <meta charset="utf-8">
+                    <title>Example 1</title>
+                    <link rel="stylesheet" href="css/recipt.css" media="all" />
+                </head>
+                <body >
+                        <header class="clearfix">
+                            <div id="logo">
+                                <img src="img/logo.png">
+                            </div>
+                            <h1>WebUni Education</h1>
+                            <div id="company" class="clearfix">
+                            </div>
+                            <div id="project">
+                                <div style="font-size: 13pt"><span>CANDIDATE NAME : <span id="BILL" size="05"  style="font-size: 12pt" required /><%= rs.getString(2)%>&nbsp;<%= rs.getString(3)%></span></span></div>
+                                <div style="font-size: 13pt;margin-top: 10px;"><span>YEAR : <%= rs.getString(7)%></span></div>
+                                <div style="font-size: 13pt;margin-top: 10px;"><span>COURSE : <span id="BILL" size="05"  style="font-size: 12pt" required ><%= rs.getString(6)%></div>
+                                
+                            </div>
+                        </header>
+                        <main>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td  class="grand total" rowspan="2" style="text-align: center;" > DATE : 00/00/0000<BR  /><BR />SECRETARY<BR />(MAHARASHTRA STATE BOARD OF TECHNICAL EDUCATION)</td>
+                                        <td  class="grand total" style="font-size: 13pt">TOTAL</td>
+                                        <td  class="grand total" style="font-size: 13pt"></td>
+                                        <td  class="grand total" style="font-size: 13pt">TOTAL MARKS OBTAINED</td>
+                                    </tr>
+                                    <tr >
+                                        <td  class="grand total">10</td>
+                                        <td class="grand total"></td>
+                                        <td class="grand total"><%= sum%></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="grand total" style="font-size: 13pt"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                                    <a href="test.jsp" style="margin-top: 30px;
+                                    background-color: #4CAF50;
+                                    border: none;
+                                    Color:white;
+                                    padding: 16px 32px;
+                                    text-decoration: none;
+                                    margin: 4px 2px;
+                                    cursor: pointer;
+                                    float: right;">Home Page
+                                    </a>
+                        </main>
+                </body>
+            </html>
+<%
+        }
+    }
+    catch(Exception e)
+    {
+        System.out.println(e);
+    }
     
 %>
